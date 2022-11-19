@@ -38,23 +38,23 @@ class Cannonball(pg.sprite.Sprite):
             self.xvel = 0
             self.yvel = 0
             global velx, vely
-            velx.text = str(self.stats()[0] * 1000 // 1 / 1000)
-            vely.text = str(self.stats()[1] * 1000 // 1 / 1000)
+            velx.text = str(self.stats()[0] * 100 // 1 / 2000)
+            vely.text = str(self.stats()[1] * 100 // 1 / 2000)
 
     def physics(self, rect):
-        self.yvel += 9.8 / 60
-        return rect.move(self.xvel, self.yvel)
+        self.yvel += 9.8 / 20
+        return rect.move((self.xvel / 20), (self.yvel / 20))
     
     def stats(self):
-        return (max(self.allx) - min(self.allx), max(self.ally) - min(self.ally))
+        return ((max(self.allx) - min(self.allx)) / 20, (max(self.ally) - min(self.ally)) / 20)
 
     def fire(self, xv, yv):
         self.allx = []
         self.ally = []
         self.rect.x = cannon.rect.x + 80
         self.rect.y = cannon.rect.y
-        self.xvel = xv
-        self.yvel = yv
+        self.xvel = xv * 20
+        self.yvel = yv * 20
 
 class Cannon(pg.sprite.Sprite):
 
@@ -162,7 +162,7 @@ def main():
     clock = pg.time.Clock()
 
     while True:
-        clock.tick(60)
+        clock.tick(20)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
@@ -204,8 +204,8 @@ def main():
 
         if ball.xvel != 0 and ball.yvel != 0:
             ball.update()
-            velx.text = str((ball.xvel * 1000 // 1) / 1000)
-            vely.text = str((ball.yvel * 1000 // 1) / 1000)
+            velx.text = str((ball.xvel * 100 // 1) / 2000)
+            vely.text = str((ball.yvel * 100 // 1) / 2000)
 
         for l in (lvel, lang, velx, vely):
             pg.draw.rect(screen, l.color, l)
